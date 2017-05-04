@@ -23,6 +23,7 @@
 - name: Find registered runners
   command: gitlab-ci-multi-runner list
   register: current_runners
+  check_mode: no
   changed_when: false
 
 - set_fact: runner_env='{{runner_env | default("") + " --env " + item.key + "=" + item.value}}'
