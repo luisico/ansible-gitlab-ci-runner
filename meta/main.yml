@@ -1,6 +1,7 @@
+---
 galaxy_info:
   author: Luis Gracia
-  description: Install Gitlab's CI Multi runner
+  description: Install Gitlab CI Multi runner
   company: EMBL-EBI
   license: CC-BY-SA 4.0
   min_ansible_version: 2.2

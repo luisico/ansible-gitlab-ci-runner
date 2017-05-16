@@ -1,8 +1,10 @@
 Gitlab CI Runner
 ================
-Install Gitlab's CI Multi runner and register a runner.
+Install Gitlab CI Multi runner and register a runner.
 
 Only docker executor is currently supported.
+
+Only one runner can be registered per host each time the role is run. Already registered runners will be skipped if found by name or token. Runners removed from the GitLab CI server will be remove from the host.
 
 This role adds the official repository, but leaves it disabled.
 
@@ -16,7 +18,7 @@ See `defaults/main.yml`.
 
 Dependencies
 ------------
-Docker needs to be installed.
+Docker needs to be installed, ie using some docker role in Ansible Galaxy.
 
 Example Playbook
 ----------------
@@ -32,7 +34,6 @@ TODO
 ----
 - Better way of finding already registered runners.
 - Allow runners to pick jobs without tags.
-- Add link to docker role in readme.
 - Activate `repo_gpgcheck`. Rpm from repository is not signed, but the repo itself is, however yum gets into validation problems of the repo.
 
 Licence
@@ -41,4 +42,4 @@ Licensed under [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
 Author Information
 ------------------
-Luis Gracia <luis.gracia@ebi.ac.uk>
+Luis Gracia <luis.gracia@ebi.ac.uk> [luisico](https://github.com/luisico)
