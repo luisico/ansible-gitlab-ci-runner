@@ -17,12 +17,12 @@
 
 - name: Remove no longer existing runners
   command: gitlab-ci-multi-runner verify --delete
-  register: verify
-  changed_when: '" is removed" in verify.stderr'
+  register: gitlab_ci__r_verify
+  changed_when: '" is removed" in gitlab_ci__r_verify.stderr'
 
 - name: Find registered runners
   command: gitlab-ci-multi-runner list
-  register: current_runners
+  register: gitlab_ci__r_current_runners
   check_mode: no
   changed_when: false
 
@@ -31,4 +31,4 @@
 
 - name: Register runner
   command: gitlab-ci-multi-runner register -n --url '{{gitlab_ci_runner_url}}' --registration-token '{{gitlab_ci_runner_token}}' --name '{{gitlab_ci_runner_name}}' --executor '{{gitlab_ci_runner_executor}}' --docker-image '{{gitlab_ci_runner_docker_image}}' {{gitlab_ci_runner_docker_options | join(" ")}} --tag-list '{{gitlab_ci_runner_tags | join(",")}}' {{runner_env | default('')}}
-  when: gitlab_ci_runner_token and gitlab_ci_runner_name not in current_runners.stderr_lines[1:] | join(' ')
+  when: gitlab_ci_runner_token and gitlab_ci_runner_name not in gitlab_ci__r_current_runners.stderr_lines[1:] | join(' ')
