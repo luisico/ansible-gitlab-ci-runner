@@ -42,7 +42,7 @@ Released under the [MIT license](https://opensource.org/licenses/MIT).
 
 Author Information
 ------------------
-Luis Gracia while at [EMBL-EBI](http://www.ebi.ac.uk/):
-- luis.gracia [at] ebi.ac.uk
+Luis Gracia while at [EMBL-EBI](http://www.ebi.ac.uk) and [Rockefeller University](https://www.rockefeller.edu):
+- luis.gracia [at] rockefeller.edu
 - GitHub at [luisico](https://github.com/luisico)
 - Galaxy at [luisico](https://galaxy.ansible.com/luisico)
