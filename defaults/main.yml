@@ -1,28 +1,28 @@
 ---
 # Gitlab version (specify version or use `latest`)
-gitlab_ci_runner_version: latest
+gitlab_runner_version: latest
 
 # Add a runner with the following options:
 # - URL of the Gitlab CI server
-gitlab_ci_runner_url: localhost
+gitlab_runner_url: localhost
 
 # - Runner name (defaults to hostname)
-gitlab_ci_runner_name: '{{inventory_hostname}}'
+gitlab_runner_name: '{{inventory_hostname}}'
 
 # - Token to register the runner (found on GitLab)
-gitlab_ci_runner_token: ''
+gitlab_runner_token: ''
 
 # - List of tags to add to the runner
-gitlab_ci_runner_tags: []
+gitlab_runner_tags: []
 
 # - Dictionary of environment variables for the runner
-gitlab_ci_runner_env: {}
+gitlab_runner_env: {}
 
 # - Executor (currently only supports docker)
-gitlab_ci_runner_executor: docker
+gitlab_runner_executor: docker
 
 # - Default docker image for the docker executor (can be overriden in `.gitlab-ci.yml`)
-gitlab_ci_runner_docker_image: 'docker:latest'
+gitlab_runner_docker_image: 'docker:latest'
 
 # - List of docker options passed by the runner to the docker executor
-gitlab_ci_runner_docker_options: []
+gitlab_runner_docker_options: []

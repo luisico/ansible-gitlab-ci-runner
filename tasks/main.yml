@@ -2,14 +2,14 @@
 - name: Add yum repository
   yum_repository: name=gitlab-runner description='Gitlab runner' baseurl=https://packages.gitlab.com/runner/gitlab-runner/el/{{ansible_distribution_major_version}}/$basearch gpgcheck=no gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey enabled=no owner=root group=root mode=0644
 
-- name: Install gitlab ci runner {{gitlab_ci_runner_version}}
-  yum: name=gitlab-runner-{{gitlab_ci_runner_version}} state=present enablerepo=gitlab-runner
-  when: gitlab_ci_runner_version != 'latest'
+- name: Install gitlab runner {{gitlab_runner_version}}
+  yum: name=gitlab-runner-{{gitlab_runner_version}} state=present enablerepo=gitlab-runner
+  when: gitlab_runner_version != 'latest'
   notify: Restart gitlab runner
 
-- name: Install latest gitlab ci runner
+- name: Install latest gitlab runner
   yum: name=gitlab-runner state=latest enablerepo=gitlab-runner
-  when: gitlab_ci_runner_version == 'latest'
+  when: gitlab_runner_version == 'latest'
   notify: Restart gitlab runner
 
 - name: Enable service
@@ -17,18 +17,18 @@
 
 - name: Remove no longer existing runners
   command: gitlab-runner verify --delete
-  register: gitlab_ci__r_verify
-  changed_when: '" is removed" in gitlab_ci__r_verify.stderr'
+  register: gitlab_runner__r_verify
+  changed_when: '" is removed" in gitlab_runner__r_verify.stderr'
 
 - name: Find registered runners
   command: gitlab-runner list
-  register: gitlab_ci__r_current_runners
+  register: gitlab_runner__r_current_runners
   check_mode: no
   changed_when: false
 
 - set_fact: runner_env='{{runner_env | default("") + " --env " + item.key + "=" + item.value}}'
-  with_dict: '{{gitlab_ci_runner_env}}'
+  with_dict: '{{gitlab_runner_env}}'
 
 - name: Register runner
-  command: gitlab-runner register -n --url '{{gitlab_ci_runner_url}}' --registration-token '{{gitlab_ci_runner_token}}' --name '{{gitlab_ci_runner_name}}' --executor '{{gitlab_ci_runner_executor}}' --docker-image '{{gitlab_ci_runner_docker_image}}' {{gitlab_ci_runner_docker_options | join(" ")}} --tag-list '{{gitlab_ci_runner_tags | join(",")}}' {{runner_env | default('')}}
-  when: gitlab_ci_runner_token and gitlab_ci_runner_name not in gitlab_ci__r_current_runners.stderr_lines[1:] | join(' ')
+  command: gitlab-runner register -n --url '{{gitlab_runner_url}}' --registration-token '{{gitlab_runner_token}}' --name '{{gitlab_runner_name}}' --executor '{{gitlab_runner_executor}}' --docker-image '{{gitlab_runner_docker_image}}' {{gitlab_runner_docker_options | join(" ")}} --tag-list '{{gitlab_runner_tags | join(",")}}' {{runner_env | default('')}}
+  when: gitlab_runner_token and gitlab_runner_name not in gitlab_runner__r_current_runners.stderr_lines[1:] | join(' ')
