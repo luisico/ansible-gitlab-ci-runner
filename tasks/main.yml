@@ -1,14 +1,14 @@
 ---
 - name: Add yum repository
-  yum_repository: name=gitlab-ci-multi-runner description='Gitlab ci multi runner' baseurl=https://packages.gitlab.com/runner/gitlab-ci-multi-runner/el/{{ansible_distribution_major_version}}/$basearch gpgcheck=no gpgkey=https://packages.gitlab.com/runner/gitlab-ci-multi-runner/gpgkey enabled=no owner=root group=root mode=0644
+  yum_repository: name=gitlab-runner description='Gitlab runner' baseurl=https://packages.gitlab.com/runner/gitlab-runner/el/{{ansible_distribution_major_version}}/$basearch gpgcheck=no gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey enabled=no owner=root group=root mode=0644
 
 - name: Install gitlab ci runner {{gitlab_ci_runner_version}}
-  yum: name=gitlab-ci-multi-runner-{{gitlab_ci_runner_version}} state=present enablerepo=gitlab-ci-multi-runner
+  yum: name=gitlab-runner-{{gitlab_ci_runner_version}} state=present enablerepo=gitlab-runner
   when: gitlab_ci_runner_version != 'latest'
   notify: Restart gitlab runner
 
 - name: Install latest gitlab ci runner
-  yum: name=gitlab-ci-multi-runner state=latest enablerepo=gitlab-ci-multi-runner
+  yum: name=gitlab-runner state=latest enablerepo=gitlab-runner
   when: gitlab_ci_runner_version == 'latest'
   notify: Restart gitlab runner
 
