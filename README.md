@@ -1,4 +1,4 @@
-Gitlab CI Runner
+Gitlab Runner
 ================
 Install Gitlab Runner and register a runner.
 
@@ -27,7 +27,7 @@ Example:
 - hosts: servers
   roles:
     - docker
-    - gitlab-ci-runner
+    - gitlab-runner
 ```
 
 TODO
