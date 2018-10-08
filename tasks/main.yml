@@ -7,13 +7,13 @@
   when: gitlab_ci_runner_version != 'latest'
   notify: Restart gitlab runner
 
-- name: Enable service
-  service: name=gitlab-runner state=started enabled=yes
-
 - name: Install latest gitlab ci runner
   yum: name=gitlab-ci-multi-runner state=latest enablerepo=gitlab-ci-multi-runner
   when: gitlab_ci_runner_version == 'latest'
   notify: Restart gitlab runner
+
+- name: Enable service
+  service: name=gitlab-runner state=started enabled=yes
 
 - name: Remove no longer existing runners
   command: gitlab-ci-multi-runner verify --delete
