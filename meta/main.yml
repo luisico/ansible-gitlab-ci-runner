@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Luis Gracia
-  description: Install Gitlab CI Multi runner
+  description: Install Gitlab Runner
   license: MIT
   min_ansible_version: 2.2
   platforms:

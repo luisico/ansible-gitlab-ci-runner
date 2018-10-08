@@ -1,6 +1,6 @@
 Gitlab CI Runner
 ================
-Install Gitlab CI Multi runner and register a runner.
+Install Gitlab Runner and register a runner.
 
 Only docker executor is currently supported.
 
