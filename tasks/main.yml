@@ -1,27 +1,27 @@
 ---
 - name: Add yum repository
-  yum_repository: name=gitlab-ci-multi-runner description='Gitlab ci multi runner' baseurl=https://packages.gitlab.com/runner/gitlab-ci-multi-runner/el/{{ansible_distribution_major_version}}/$basearch gpgcheck=no gpgkey=https://packages.gitlab.com/runner/gitlab-ci-multi-runner/gpgkey enabled=no owner=root group=root mode=0644
+  yum_repository: name=gitlab-runner description='Gitlab runner' baseurl=https://packages.gitlab.com/runner/gitlab-runner/el/{{ansible_distribution_major_version}}/$basearch gpgcheck=no gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey enabled=no owner=root group=root mode=0644
 
 - name: Install gitlab ci runner {{gitlab_ci_runner_version}}
-  yum: name=gitlab-ci-multi-runner-{{gitlab_ci_runner_version}} state=present enablerepo=gitlab-ci-multi-runner
+  yum: name=gitlab-runner-{{gitlab_ci_runner_version}} state=present enablerepo=gitlab-runner
   when: gitlab_ci_runner_version != 'latest'
+  notify: Restart gitlab runner
+
+- name: Install latest gitlab ci runner
+  yum: name=gitlab-runner state=latest enablerepo=gitlab-runner
+  when: gitlab_ci_runner_version == 'latest'
   notify: Restart gitlab runner
 
 - name: Enable service
   service: name=gitlab-runner state=started enabled=yes
 
-- name: Install latest gitlab ci runner
-  yum: name=gitlab-ci-multi-runner state=latest enablerepo=gitlab-ci-multi-runner
-  when: gitlab_ci_runner_version == 'latest'
-  notify: Restart gitlab runner
-
 - name: Remove no longer existing runners
-  command: gitlab-ci-multi-runner verify --delete
+  command: gitlab-runner verify --delete
   register: gitlab_ci__r_verify
   changed_when: '" is removed" in gitlab_ci__r_verify.stderr'
 
 - name: Find registered runners
-  command: gitlab-ci-multi-runner list
+  command: gitlab-runner list
   register: gitlab_ci__r_current_runners
   check_mode: no
   changed_when: false
@@ -30,5 +30,5 @@
   with_dict: '{{gitlab_ci_runner_env}}'
 
 - name: Register runner
-  command: gitlab-ci-multi-runner register -n --url '{{gitlab_ci_runner_url}}' --registration-token '{{gitlab_ci_runner_token}}' --name '{{gitlab_ci_runner_name}}' --executor '{{gitlab_ci_runner_executor}}' --docker-image '{{gitlab_ci_runner_docker_image}}' {{gitlab_ci_runner_docker_options | join(" ")}} --tag-list '{{gitlab_ci_runner_tags | join(",")}}' {{runner_env | default('')}}
+  command: gitlab-runner register -n --url '{{gitlab_ci_runner_url}}' --registration-token '{{gitlab_ci_runner_token}}' --name '{{gitlab_ci_runner_name}}' --executor '{{gitlab_ci_runner_executor}}' --docker-image '{{gitlab_ci_runner_docker_image}}' {{gitlab_ci_runner_docker_options | join(" ")}} --tag-list '{{gitlab_ci_runner_tags | join(",")}}' {{runner_env | default('')}}
   when: gitlab_ci_runner_token and gitlab_ci_runner_name not in gitlab_ci__r_current_runners.stderr_lines[1:] | join(' ')
