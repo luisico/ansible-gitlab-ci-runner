@@ -27,7 +27,7 @@
   changed_when: false
 
 - set_fact: runner_env='{{runner_env | default("") + " --env " + item.key + "=" + item.value}}'
-  with_dict: '{{gitlab_ci_runner_env}}'
+  loop: '{{gitlab_ci_runner_env | dict2items}}'
 
 - name: Register runner
   command: gitlab-runner register -n --url '{{gitlab_ci_runner_url}}' --registration-token '{{gitlab_ci_runner_token}}' --name '{{gitlab_ci_runner_name}}' --executor '{{gitlab_ci_runner_executor}}' --docker-image '{{gitlab_ci_runner_docker_image}}' {{gitlab_ci_runner_docker_options | join(" ")}} --tag-list '{{gitlab_ci_runner_tags | join(",")}}' {{runner_env | default('')}}
